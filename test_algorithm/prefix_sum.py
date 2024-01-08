@@ -80,7 +80,7 @@ class NodeMgmt:
 #2 child의 left만 가지고 있는 노드 삭제
         if self.current_node.left != None and self.current_node.right==None:
         #current가 parent 왼쪽인지 오른쪽인지
-            if vale<self.parent.value: #왼쪽일 때
+            if value<self.parent.value: #왼쪽일 때
                 self.parent.left = self.current_node.left
             else: #오른쪽일 때
                 self.parent.right = self.current_node.left
