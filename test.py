@@ -85,26 +85,83 @@
 
 # bfs(graph, v, visited)
 
-n, m, v = map(int, input().split())
-matrix = [[0] * (n+1) for _ in range(n+1)]
-visited = [False] * (n+1)
+# n, m, v = map(int, input().split())
+# matrix = [[0] * (n+1) for _ in range(n+1)]
+# visited = [False] * (n+1)
 
-for _ in range(m):
-  f, t = map(int, input().split())
-  matrix[f][t] = matrix[t][f] = 1
+# for _ in range(m):
+#   f, t = map(int, input().split())
+#   matrix[f][t] = matrix[t][f] = 1
   
-from collections import deque
+# from collections import deque
 
-def bfs(matrix, i, visited):
-  queue= deque()
-  queue.append(i)
-  while queue:
-    value = queue.popleft()
-    if not visited[value]:
-      print(value, end=' ')
-      visited[value] = True
-      for c in range(len(matrix[value])):
-        if matrix[value][c] == 1 and not visited[c]:
-          queue.append(c)
+# def bfs(matrix, i, visited):
+#   queue= deque()
+#   queue.append(i)
+#   while queue:
+#     value = queue.popleft()
+#     if not visited[value]:
+#       print(value, end=' ')
+#       visited[value] = True
+#       for c in range(len(matrix[value])):
+#         if matrix[value][c] == 1 and not visited[c]:
+#           queue.append(c)
 
-bfs(matrix, v, visited)
+# bfs(matrix, v, visited)
+
+def quick_sort(arr):
+    def sort(low, high):
+        if high <= low:
+            return
+
+        mid = partition(low, high)
+        sort(low, mid - 1)
+        sort(mid, high)
+
+    def partition(low, high):
+        pivot = arr[(low + high) // 2]
+        while low <= high:
+            while arr[low] < pivot:
+                low += 1
+            while arr[high] > pivot:
+                high -= 1
+            if low <= high:
+                arr[low], arr[high] = arr[high], arr[low]
+                low, high = low + 1, high - 1
+        return low
+
+    return sort(0, len(arr) - 1)
+
+def merge_sort(arr):
+    def sort(low, high):
+        if high - low < 2:
+            return
+        mid = (low + high) // 2
+        sort(low, mid)
+        sort(mid, high)
+        merge(low, mid, high)
+
+    def merge(low, mid, high):
+        temp = []
+        l, h = low, mid
+
+        while l < mid and h < high:
+            if arr[l] < arr[h]:
+                temp.append(arr[l])
+                l += 1
+            else:
+                temp.append(arr[h])
+                h += 1
+
+        while l < mid:
+            temp.append(arr[l])
+            l += 1
+        while h < high:
+            temp.append(arr[h])
+            h += 1
+
+        for i in range(low, high):
+            arr[i] = temp[i - low]
+
+    return sort(0, len(arr))
+
