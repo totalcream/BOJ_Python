@@ -109,59 +109,79 @@
 
 # bfs(matrix, v, visited)
 
-def quick_sort(arr):
-    def sort(low, high):
-        if high <= low:
-            return
+# def quick_sort(arr):
+#     def sort(low, high):
+#         if high <= low:
+#             return
 
-        mid = partition(low, high)
-        sort(low, mid - 1)
-        sort(mid, high)
+#         mid = partition(low, high)
+#         sort(low, mid - 1)
+#         sort(mid, high)
 
-    def partition(low, high):
-        pivot = arr[(low + high) // 2]
-        while low <= high:
-            while arr[low] < pivot:
-                low += 1
-            while arr[high] > pivot:
-                high -= 1
-            if low <= high:
-                arr[low], arr[high] = arr[high], arr[low]
-                low, high = low + 1, high - 1
-        return low
+#     def partition(low, high):
+#         pivot = arr[(low + high) // 2]
+#         while low <= high:
+#             while arr[low] < pivot:
+#                 low += 1
+#             while arr[high] > pivot:
+#                 high -= 1
+#             if low <= high:
+#                 arr[low], arr[high] = arr[high], arr[low]
+#                 low, high = low + 1, high - 1
+#         return low
 
-    return sort(0, len(arr) - 1)
+#     return sort(0, len(arr) - 1)
 
-def merge_sort(arr):
-    def sort(low, high):
-        if high - low < 2:
-            return
-        mid = (low + high) // 2
-        sort(low, mid)
-        sort(mid, high)
-        merge(low, mid, high)
+# def merge_sort(arr):
+#     def sort(low, high):
+#         if high - low < 2:
+#             return
+#         mid = (low + high) // 2
+#         sort(low, mid)
+#         sort(mid, high)
+#         merge(low, mid, high)
 
-    def merge(low, mid, high):
-        temp = []
-        l, h = low, mid
+#     def merge(low, mid, high):
+#         temp = []
+#         l, h = low, mid
 
-        while l < mid and h < high:
-            if arr[l] < arr[h]:
-                temp.append(arr[l])
-                l += 1
-            else:
-                temp.append(arr[h])
-                h += 1
+#         while l < mid and h < high:
+#             if arr[l] < arr[h]:
+#                 temp.append(arr[l])
+#                 l += 1
+#             else:
+#                 temp.append(arr[h])
+#                 h += 1
 
-        while l < mid:
-            temp.append(arr[l])
-            l += 1
-        while h < high:
-            temp.append(arr[h])
-            h += 1
+#         while l < mid:
+#             temp.append(arr[l])
+#             l += 1
+#         while h < high:
+#             temp.append(arr[h])
+#             h += 1
 
-        for i in range(low, high):
-            arr[i] = temp[i - low]
+#         for i in range(low, high):
+#             arr[i] = temp[i - low]
 
-    return sort(0, len(arr))
+#     return sort(0, len(arr))
 
+# from sys import stdin
+# input = stdin.readline
+
+# N = int(input())
+
+# dp = [0] * (N + 1)
+# MOD = 10007
+
+# if N < 3:
+#     print(1)
+# else:
+#     dp[2] = 1
+#     dp[3] = 1
+#     for i in range(4, N + 1):
+#         if i >= 2:
+#             dp[i] = ((dp[i] + dp[i - 2]) % MOD)
+#         if i >= 3:
+#             dp[i] = ((dp[i] + dp[i - 3]) % MOD)
+    
+#     print(dp[N])
