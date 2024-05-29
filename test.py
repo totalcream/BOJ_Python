@@ -354,83 +354,179 @@
 
 # print(sum(dp[N]) % MOD)
 
-def is_convex_polygon(points):
-    n = len(points)
-    if n < 3:
-        return False
-    orientation = 0
-    for i in range(n):
-        x1, y1 = points[i]
-        x2, y2 = points[(i + 1) % n]
-        x3, y3 = points[(i + 2) % n]
-        cross_product = (x2 - x1) * (y3 - y2) - (y2 - y1) * (x3 - x2)
-        if cross_product == 0:
-            continue
-        if orientation == 0:
-            orientation = cross_product
-        elif orientation * cross_product < 0:
-            return False
-    return True
+def matrix_chain_order(p):
+    n = len(p) - 1
+    M = [[0 for x in range(n)] for y in range(n)]
+    P = [[0 for x in range(n)] for y in range(n)]
+    
+    for length in range(2, n+1):
+        for i in range(n-length+1):
+            j = i + length - 1
+            M[i][j] = float('inf')
+            for k in range(i, j):
+                q = M[i][k] + M[k+1][j] + p[i]*p[k+1]*p[j+1]
+                if q < M[i][j]:
+                    M[i][j] = q
+                    P[i][j] = k
+    
+    return M, P
 
+# 주어진 행렬 차원
+p = [10, 4, 5, 20, 2, 50]
 
+# 최소 곱셈 수와 최적 곱셈 순서 계산
+M, P = matrix_chain_order(p)
 
-from sys import stdin
-input = stdin.readline
-from itertools import combinations, permutations, combinations_with_replacement
-N = int(input())
-points = []
-for i in range(N):
-    points.append(list(map(int, input().split())))
+import pandas as pd
+import ace_tools as tools
 
+# 테이블 형식으로 출력
+M_df = pd.DataFrame(M, columns=[f'A{i+1}' for i in range(len(p)-1)], index=[f'A{i+1}' for i in range(len(p)-1)])
+P_df = pd.DataFrame(P, columns=[f'A{i+1}' for i in range(len(p)-1)], index=[f'A{i+1}' for i in range(len(p)-1)])
 
-def cross(x1, y1, x2, y2):
-    if x1*y2 - x2*y1 > 0:
-        return True
-    else:
-        return False
+tools.display_dataframe_to_user(name="Matrix M Table", dataframe=M_df)
+tools.display_dataframe_to_user(name="Matrix P Table", dataframe=P_df)
 
-lst = list(combinations(points, 4))
-count = 0
-print(len(lst))
-print(lst)
-for i in lst:
-    if is_convex_polygon(i):
-        count += 1
+M_df, P_df
 
-print(count)
-
-
-# 플로이드
-"""
- 모든 a> b로 최소 비용
-"""
-
+# 24479
 import sys
-INF = int(1e9)
+sys.setrecursionlimit(10 ** 6)
+input = sys.stdin.readline
 
-n = int(sys.stdin.readline())  # 도시의 수
-m = int(sys.stdin.readline())  # 버스의 수
+n, m, r = map(int, input().split()) # 정점의 수, 간선의 수, 시작 정점
+graph = [[] for _ in range(n+1)]
+visited = [0] * (n+1) # 방문 순서 저장. 0이면 방문 X
 
-graph = [[INF] * (n + 1) for _ in range(n + 1)]    # 모든 최단 거리를 저장
-for i in range(1, n + 1):
-    for j in range(1, n + 1):
-        if i == j:
-            graph[i][j] = 0
+c = 1
+def dfs(graph, v, visited):
+    global c
+    visited[v] = c # 방문하면 순서 나타내기
+    
+    for i in graph[v]:
+        if visited[i] == 0: # 방문 안한 노드이면
+            c += 1
+            dfs(graph, i, visited) # dfs 재귀
+            
+# m개의 연결된 간선 정보 입력받기
+for i in range(m):
+    a, b = (map(int, input().split()))
+    graph[a].append(b)
+    graph[b].append(a)
+# print(graph)
+
+for i in range(n+1): # 오름차순으로 인접노드 방문하기 위해 정렬
+    graph[i].sort()
+# print(graph)
+
+dfs(graph, r, visited)
+
+for i in range(1, n+1):
+    print(visited[i])
+
+
+# 24480
+import sys
+input = sys.stdin.readline
+sys.setrecursionlimit(10**6)
+
+n,m,r = map(int,input().split())
+link = [[] for _ in range(n+1)]
+ans = [0]*(n+1)
+cur = 1
 
 for _ in range(m):
-    a, b, c = map(int, sys.stdin.readline().split())
-    graph[a][b] = min(c, graph[a][b])   # 노선이 하나가 아닐 수 있음 > 최소값 넣기 
+    a,b = map(int,input().split())
+    link[a].append(b)
+    link[b].append(a)
+for lst in link:
+    lst.sort(reverse = True)
 
-# 2. 다이나믹 프로그래밍
-for k in range(1, n + 1):
-    for a in range(1, n + 1):
-        for b in range(1, n + 1):
-            graph[a][b] = min(graph[a][b], graph[a][k] + graph[k][b])
+def dfs(v):
+    global cur
+    ans[v] = cur
+    for to_v in link[v]:
+        if ans[to_v]:
+            continue
+        cur+=1
+        dfs(to_v)
+dfs(r)
+for i in ans[1:]:
+    print(i)
 
-for a in range(1, n + 1):
-    for b in range(1, n + 1):
-        if graph[a][b] == INF:
-            print("0",  end=" ")
-        else:
-            print(graph[a][b], end=" ")
-    print()
+# 24444
+
+import sys
+from collections import deque
+sys.setrecursionlimit(10 ** 6)
+input = sys.stdin.readline
+
+n, m, r = map(int, input().split()) # 정점의 수, 간선의 수, 시작 정점
+graph = [[] for _ in range(n+1)]
+visited = [0] * (n+1) # 방문 순서 저장. 0이면 방문 X
+
+c = 1 # 순서
+def bfs(graph, start, visited):
+    global c
+    queue = deque([start])
+    visited[start] = c # 방문하면 순서 나타내기
+    
+    while queue:
+        v = queue.popleft()
+        for i in graph[v]: # 인접 노드 중
+            if visited[i] == 0: # 방문하지 않은 노드 큐에 추가
+                queue.append(i)
+                c += 1 # 순서+1
+                visited[i] = c
+
+# m개의 연결된 간선 정보 입력받기
+for i in range(m):
+    a, b = (map(int, input().split()))
+    graph[a].append(b)
+    graph[b].append(a)
+# print(graph)
+
+for i in range(n+1): # 인접노드 정보 오름차순 정렬
+    graph[i].sort()
+# print(graph)
+
+bfs(graph, r, visited)
+
+for i in range(1, n+1):
+    print(visited[i])
+
+
+# 24445
+
+from collections import deque
+import sys
+input = sys.stdin.readline
+
+n, m, r = map(int, input().split())
+graph = [[] for _ in range(n + 1)]
+visited = [0] * (n + 1)
+count = 1
+
+for _ in range(m):
+    a, b = map(int, input().split())
+    graph[a].append(b)
+    graph[b].append(a)
+
+def bfs(v):
+    global count
+
+    q = deque([r])
+    visited[r] = 1
+    while q:
+        v = q.popleft()
+        graph[v].sort(reverse=True)
+        for g in graph[v]:
+            if visited[g] == 0:
+                count += 1
+                visited[g] = count
+                q.append(g)
+bfs(r)
+
+for v in visited[1:]:
+    print(v)
+
