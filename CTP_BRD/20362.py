@@ -1,3 +1,7 @@
+# 유니대전 퀴즈쇼
+# 2024-07-07
+# 그냥 구현문제
+
 from sys import stdin
 input = stdin.readline
 
