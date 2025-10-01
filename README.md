@@ -4,17 +4,6 @@ BOJ_Python
 
 문제 분류 폴더링: BOJ 외에도 AtCoder, SWEA, 교내/대회 문제 등 병행 관리
 
-📁 폴더 구조
-BOJ_Python/
-├─ 2023IUPC/                   # 대회/교내 문제 풀이
-├─ Algorithm_Capstone_Design/  # 알고리즘설계 교과목 관련 자료
-├─ AtCoder/                    # ABC 등 AtCoder 문제 풀이
-├─ SWEA_Python/                # SWEA 문제 풀이
-├─ test_algorithm/             # 실험/연습 코드
-├─ value/, temp/               # 임시/유틸 스니펫
-└─ README.md
-
-
 🧩 네이밍 & 태그 규칙
 
 파일: ctp_문제번호.py (예: ctp_1000.py) -> CTP활동 때 푼 것
