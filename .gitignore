@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# OS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Local / Temp
+Archive/Sandbox/
+temp/
+test.py
